@@ -80,14 +80,14 @@
     </section>
 
     <section id="product1" class="section-p1">
-        <h2>Featured Products</h2>
-        <p>Summer Collection New Modern Design</p>
+        <h2>MORE GAMES</h2>
+        <p>Cool games for you to play</p>
         <div class="pro-container">
             <div class="pro">
-                <img src="images/products/n1.jpg" alt="">
+                <img src="images/TOP 2024/COD_6.jpg" alt="">
                 <div class="des">
-                    <span>adidas</span>
-                    <h5>Cartoon Astronaut T-Shirts</h5>
+                    
+                    <h5>CALL OF DUTY 6</h5>
                     <div class="star">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -95,15 +95,15 @@
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                     </div>
-                    <h4>$78</h4>
+                    <h4>$100</h4>
                 </div>
-                <a href="#"><i class="fas fa-shopping-cart cart"></i></a>
+                <a href="singleProduct.html?id=1" class="cart"><i class="fas fa-shopping-cart"></i></a>
             </div>
             <div class="pro">
-                <img src="images/products/n2.jpg" alt="">
+                <img src="images/BANNER/capsule_616x353.jpg" alt="">
                 <div class="des">
-                    <span>adidas</span>
-                    <h5>Cartoon Astronaut T-Shirts</h5>
+                    
+                    <h5>BATMAN ARKHAM KNIGHT</h5>
                     <div class="star">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -111,15 +111,17 @@
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                     </div>
-                    <h4>$78</h4>
+                    <div class="price-container">
+                        <span class="old-price">$90</span>
+                        <span class="new-price">$30</span>
+                    </div>
                 </div>
-                <a href="#"><i class="fas fa-shopping-cart cart"></i></a>
+                <a href="singleProduct.html?id=10" class="cart"><i class="fas fa-shopping-cart"></i></a>
             </div>
             <div class="pro">
-                <img src="images/products/n3.jpg" alt="">
+                <img src="images/TOP 2024/NBA_2K25.avif" alt="">
                 <div class="des">
-                    <span>adidas</span>
-                    <h5>Cartoon Astronaut T-Shirts</h5>
+                    <h5>NBA-2K25</h5>
                     <div class="star">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -127,15 +129,14 @@
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                     </div>
-                    <h4>$78</h4>
+                    <h4>$70</h4>
                 </div>
-                <a href="#"><i class="fas fa-shopping-cart cart"></i></a>
+                <a href="singleProduct.html?id=4" class="cart"><i class="fas fa-shopping-cart"></i></a>
             </div>
             <div class="pro">
-                <img src="images/products/n4.jpg" alt="">
+                <img src="images/TOP 2024/SILENT HILL 2.avif" alt="">
                 <div class="des">
-                    <span>adidas</span>
-                    <h5>Cartoon Astronaut T-Shirts</h5>
+                    <h5>Silent Hill 2</h5>
                     <div class="star">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -143,9 +144,9 @@
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                     </div>
-                    <h4>$78</h4>
+                    <h4>$100</h4>
                 </div>
-                <a href="#"><i class="fas fa-shopping-cart cart"></i></a>
+                <a href="singleProduct.html?id=6" class="cart"><i class="fas fa-shopping-cart"></i></a>
             </div>
         </div>
     </section>
@@ -213,7 +214,7 @@
     </footer>
 
     <script>
-        // Get product ID from URL
+        // Get product ID from URL and load products.js
         const urlParams = new URLSearchParams(window.location.search);
         const productId = parseInt(urlParams.get('id'));
         
@@ -222,65 +223,90 @@
 
         // Load product details
         function loadProductDetails() {
+            // Check if products is defined
+            if (typeof products === 'undefined') {
+                console.error('Products not loaded');
+                alert('Error loading products. Please try again later.');
+                window.location.href = 'shop.html';
+                return;
+            }
+
             const product = products[productId];
             if (!product) {
+                console.error('Product not found:', productId);
                 alert('Product not found!');
                 window.location.href = 'shop.html';
                 return;
             }
             
-            document.getElementById('MainImg').src = product.image;
-            document.getElementById('productName').textContent = product.name;
-            
-            // Handle price display
-            if (product.oldPrice) {
-                document.getElementById('productPrice').innerHTML = `
-                    <span style="text-decoration: line-through; color: #999; margin-right: 10px;">$${product.oldPrice}</span>
-                    <span style="color: #088178;">$${product.price}</span>
-                `;
-            } else {
-                document.getElementById('productPrice').textContent = `$${product.price}`;
+            try {
+                document.getElementById('MainImg').src = product.image;
+                document.getElementById('productName').textContent = product.name;
+                
+                // Handle price display
+                if (product.oldPrice) {
+                    document.getElementById('productPrice').innerHTML = `
+                        <span style="text-decoration: line-through; color: #999; margin-right: 10px;">$${product.oldPrice}</span>
+                        <span style="color: #088178;">$${product.price}</span>
+                    `;
+                } else {
+                    document.getElementById('productPrice').textContent = `$${product.price}`;
+                }
+                
+                document.getElementById('productDescription').textContent = product.description || 'No description available';
+            } catch (error) {
+                console.error('Error loading product details:', error);
+                alert('Error displaying product details. Please try again later.');
             }
-            
-            document.getElementById('productDescription').textContent = product.description;
         }
 
         // Add to cart function
         function addToCartFromDetails() {
-            const product = products[productId];
-            if (!product) {
-                alert('Product not found!');
-                return;
+            try {
+                const product = products[productId];
+                if (!product) {
+                    alert('Product not found!');
+                    return;
+                }
+
+                // Check if product already in cart
+                const existingItem = cart.find(item => item.id === productId);
+                if (existingItem) {
+                    alert('This item is already in your cart!');
+                    return;
+                }
+
+                // Add new item to cart
+                cart.push({
+                    id: productId,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    quantity: 1
+                });
+
+                // Save to localStorage
+                localStorage.setItem('cart', JSON.stringify(cart));
+
+                // Show success message
+                alert('Item added to cart successfully!');
+                
+                // Redirect to cart page
+                window.location.href = 'cart.html';
+            } catch (error) {
+                console.error('Error adding to cart:', error);
+                alert('Error adding item to cart. Please try again later.');
             }
-
-            // Check if product already in cart
-            const existingItem = cart.find(item => item.id === product.id);
-            if (existingItem) {
-                alert('This item is already in your cart!');
-                return;
-            }
-
-            // Add new item to cart
-            cart.push({
-                id: product.id,
-                name: product.name,
-                price: product.price,
-                image: product.image,
-                quantity: 1
-            });
-
-            // Save to localStorage
-            localStorage.setItem('cart', JSON.stringify(cart));
-
-            // Show success message
-            alert('Item added to cart successfully!');
-            
-            // Redirect to cart page
-            window.location.href = 'cart.html';
         }
 
         // Load details when page loads
-        document.addEventListener('DOMContentLoaded', loadProductDetails);
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                loadProductDetails();
+            } catch (error) {
+                console.error('Error in DOMContentLoaded:', error);
+            }
+        });
     </script>
 
     <!-- javascript script file link -->
